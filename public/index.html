@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Realtime communication with WebRTC</title>
+
+  <link rel="stylesheet" href="/css/main.css" />
+
+</head>
+<style>
+  .controler{
+    border-radius: 45px;
+    background-color:lawngreen;
+    width: 75px;
+    height: 75px;
+    background-image: url(./css/mic-logo.svg);
+  }
+  .controler_closed{
+    border-radius: 45px;
+    background-color:rgb(214, 91, 173);
+    width: 75px;
+    height: 75px;
+    background-image: url(./css/mic-logo.svg);
+  }
+  .controler_waiting{
+    border-radius: 45px;
+    background-color:rgb(246, 246, 109);
+    width: 75px;
+    height: 75px;
+    background-image: url(./css/mic-logo.svg);
+  }
+</style>
+
+<body>
+
+  <h1>Realtime communication with WebRTC</h1>
+
+  <div id="videos">
+    
+    <audio controls id="localAudio"></audio>
+    <div class="controler_waiting" id="controler"></div>
+    <audio controls autoplay id="remoteAudio">
+    
+    Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- This file is automatically added/served when running "node index.js". -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/audio.js"></script>
+
+</body>
+
+</html>
