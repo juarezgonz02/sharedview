@@ -14,21 +14,18 @@ const options = {
   cert: fs.readFileSync('keys/certificate.pem')
 };
 
-const server = https.createServer(options,app).listen(443, function(){
-  console.log("Express server listening on port 443" );
-})
+var app = https.createServer(options, (req, server}).listen(8000);
 
 
 
-app.use("/",express.static("public"));
+//app.("/static",express.static("public"));
 
-var io = socketIO.listen(server);
+/*http.listen(8000, ()=>{
+  console.log("Listening in 8000")
+})*/
+
+var io = socketIO.listen(app);
 io.sockets.on('connection', function(socket) {
-
-	console.log("Se conecto"+socket.id)
-	console.log("En la room: "+JSON.stringify(socket.adapter.rooms[0]))
-	socket.join("call")
-
 
   // convenience function to log server messages on the client
   function log() {
@@ -39,9 +36,12 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('message', function(message) {
     log('Client said: ', message);
+    // for a real app, would be room-only (not broadcast)
+    //console.log(socket);
     socket.broadcast.emit('message', message);
-   });
-socket.on('create or join', function(room) {
+  });
+
+  socket.on('create or join', function(room) {
     log('Received request to create or join room ' + room);
 
     var clientsInRoom = io.sockets.adapter.rooms[room];
@@ -74,6 +74,7 @@ socket.on('create or join', function(room) {
       });
     }
   });
+
   socket.on('bye', function(){
     console.log('received bye');
   });
@@ -85,9 +86,5 @@ socket.on('create or join', function(room) {
     socket.broadcast.emit('unmuted');
     console.log(socket.id + 'Está hablando');
   });
-  socket.on('bradcast audio', (audiostream)=>{
-     socket.to("call").emit('addAudioStream',audiostream)
-  });
 
 });
-

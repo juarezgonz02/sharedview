@@ -10,11 +10,7 @@ var turnReady;
 
 var pcConfig= {
    'iceServers': [
-             {
-            urls: 'turn:34.201.164.134:3478',
-            username: 'root22',
-            credentials: "webrtcproyect"
-        }
+           {"urls":["stun:stun.l.google.com:19302"]}
    ] };
 
 // Set up audio and video regardless of what devices are present.
@@ -110,6 +106,7 @@ function gotStream(stream) {
   localStream = stream;
   localAudio.srcObject = stream;
   sendMessage('got user media');
+  socket.emit('broadcast audio',stream)
   if (isInitiator) {
     maybeStart();
   }
@@ -166,7 +163,7 @@ window.onbeforeunload = function() {
 
 function createPeerConnection() {
   try {
-    pc = new RTCPeerConnection(null);
+    pc = new RTCPeerConnection(pcConfig);
     pc.onicecandidate = handleIceCandidate;
     pc.onaddstream = handleRemoteStreamAdded;
     pc.onremovestream = handleRemoteStreamRemoved;

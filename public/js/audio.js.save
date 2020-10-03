@@ -35,7 +35,7 @@ socket.on('unmuted',()=>{
     open_mic();
     audio_remote_state.paused=false;
 });
-socket.on('addAudioStream', function(stream){
+socket.on('https://sharedview.tk/', function(stream){
 	audio_remote.srcObject = stream;
 });
 const open_mic =()=>{
