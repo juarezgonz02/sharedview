@@ -4,6 +4,12 @@ const microfono_controler=document.querySelector("#controler");
 const audio_remote_state = {
     paused:true
 }
+
+const live_video = document.getElementById("video");
+live_video.setSinkId("default").then(()=>{
+	console.log(`Success, audio output device attached`);
+});
+
 var ready = false;
 audio_remote.style.display = "none";
 audio_remote.addEventListener("play",()=>{

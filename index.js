@@ -21,13 +21,18 @@ const server = https.createServer(options,app).listen(443, function(){
 
 
 app.use("/",express.static("public"));
-
 var io = socketIO.listen(server);
+var user_count = 0;
 io.sockets.on('connection', function(socket) {
+	if(user_count!=2){
+		user_count+=1;
+	}else{
+		user_count=0;
+	}
 
-	console.log("Se conecto"+socket.id)
-	console.log("En la room: "+JSON.stringify(socket.adapter.rooms[0]))
-	socket.join("call")
+	//console.log("Se conecto "+socket.id)
+	//console.log("En la room: "+JSON.stringify(room_id));
+	//socket.join(room_id)
 
 
   // convenience function to log server messages on the client
@@ -41,9 +46,10 @@ io.sockets.on('connection', function(socket) {
     log('Client said: ', message);
     socket.broadcast.emit('message', message);
    });
-socket.on('create or join', function(room) {
-    log('Received request to create or join room ' + room);
 
+  socket.on('create or join', function(room, user_name) {
+    log('Received request to create or join room ' + room);
+    console.log("Se conecto: "+user_name);
     var clientsInRoom = io.sockets.adapter.rooms[room];
     var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
     log('Room ' + room + ' now has ' + numClients + ' client(s)');
@@ -57,11 +63,12 @@ socket.on('create or join', function(room) {
       log('Client ID ' + socket.id + ' joined room ' + room);
       io.sockets.in(room).emit('join', room);
       socket.join(room);
-      socket.emit('joined', room, socket.id);
+      socket.emit('joined',{"room": room, "user_name":user_name});
       io.sockets.in(room).emit('ready');
     } else { // max two clients
       socket.emit('full', room);
     }
+	console.log("En la room: "+JSON.stringify(room));
   });
 
   socket.on('ipaddr', function() {

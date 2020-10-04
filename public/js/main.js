@@ -20,25 +20,28 @@ var sdpConstraints = {
 };
 
 /////////////////////////////////////////////
-
-var room = 'foo';
-// Could prompt for room name:
-// room = prompt('Enter room name:');
+const userList = document.querySelector(".UserList");
+var new_user = document.createElement("Li");
+var room = '';
+var user_name = prompt("Introduce tu nombre: ");
+room = prompt('Introduce el código de la sala: ');
 
 var socket = io.connect();
 
 if (room !== '') {
-  socket.emit('create or join', room);
+  socket.emit('create or join', room, user_name);
   console.log('Attempted to create or  join room', room);
 }
 
 socket.on('created', function(room) {
   console.log('Created room ' + room);
+  new_user.innerText = user_name;
+  userList.appendChild(new_user);
   isInitiator = true;
 });
 
 socket.on('full', function(room) {
-  console.log('Room ' + room + ' is full');
+  console.log('Room ' + room + ' is full');x
 });
 
 socket.on('join', function (room){
@@ -47,8 +50,11 @@ socket.on('join', function (room){
   isChannelReady = true;
 });
 
-socket.on('joined', function(room) {
+socket.on('joined', ({room, user_name})=>{
   console.log('joined: ' + room);
+  var user = document.createElement("Li");
+  user.innerText = user_name;
+  userList.appendChild(user);
   isChannelReady = true;
 });
 
@@ -88,10 +94,9 @@ socket.on('message', function(message) {
 });
 
 ////////////////////////////////////////////////////
-
+var audioOut;
 var localAudio = document.querySelector('#localAudio');
 var remoteAudio = document.querySelector('#remoteAudio');
-
 navigator.mediaDevices.getUserMedia({
   audio: true,
   video: false
