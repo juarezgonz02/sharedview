@@ -20,41 +20,57 @@ var sdpConstraints = {
 };
 
 /////////////////////////////////////////////
-const userList = document.querySelector(".UserList");
-var new_user = document.createElement("Li");
+const userList = document.getElementById("u_list");
 var room = '';
 var user_name = prompt("Introduce tu nombre: ");
 room = prompt('Introduce el código de la sala: ');
 
 var socket = io.connect();
 
-if (room !== '') {
+ do{
   socket.emit('create or join', room, user_name);
   console.log('Attempted to create or  join room', room);
 }
+while(room == '');
 
-socket.on('created', function(room) {
+const user_list_append = (user_list)=>{
+
+
+  for(var i = 0; i<=userList.childElementCount;i++){
+    userList.removeChild(userList.childNodes[i]);
+  }
+  console.log(user_list)
+  user_list.map((name)=>{
+    let user = document.createElement("div");
+    user.className="user_name_item";
+    let username = document.createTextNode(name);
+    user.append(username); 
+    userList.appendChild(user); 
+  })
+}
+
+socket.on('created', function(room,user_list) {
+  user_list_append(user_list);
   console.log('Created room ' + room);
-  new_user.innerText = user_name;
-  userList.appendChild(new_user);
   isInitiator = true;
 });
 
 socket.on('full', function(room) {
-  console.log('Room ' + room + ' is full');x
+  console.log('Room ' + room + ' is full');
+  room = prompt('Esta sala está llena, ingrese otro código: ');
+  socket.emit("create or join", room, user_name);
 });
 
-socket.on('join', function (room){
+socket.on('join', function (room, user_list){
   console.log('Another peer made a request to join room ' + room);
   console.log('This peer is the initiator of room ' + room + '!');
   isChannelReady = true;
+  user_list_append(user_list);
 });
 
-socket.on('joined', ({room, user_name})=>{
+socket.on('joined', (room,user_list)=>{
   console.log('joined: ' + room);
-  var user = document.createElement("Li");
-  user.innerText = user_name;
-  userList.appendChild(user);
+  user_list_append(user_list);
   isChannelReady = true;
 });
 
@@ -162,8 +178,15 @@ function maybeStart() {
 
 window.onbeforeunload = function() {
   sendMessage('bye');
+
 };
 
+/////////////////////////////////////////////////////////
+////////NO TOCAR///////////////////////////////////////
+////////NO TOCAR///////////////////////////////////////
+////////NO TOCAR///////////////////////////////////////
+////////NO TOCAR///////////////////////////////////////
+////////NO TOCAR///////////////////////////////////////
 /////////////////////////////////////////////////////////
 
 function createPeerConnection() {
@@ -253,6 +276,7 @@ function requestTurn(turnURL) {
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
+  
   remoteAudio.srcObject = remoteStream;
 }
 

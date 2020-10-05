@@ -5,25 +5,34 @@ var nodeStatic = require('node-static');
 var express = require('express');
 var app = express();
 var socketIO = require('socket.io');
-var fileServer = new(nodeStatic.Server)();
 var https = require('https');
+var http = require('http');
+var fileServer = new(nodeStatic.Server)();
 var fs = require('fs');
+const { urlencoded } = require('express');
 
 const options = {
   key: fs.readFileSync('keys/privatekey.pem'),
   cert: fs.readFileSync('keys/certificate.pem')
 };
 
-const server = https.createServer(options,app).listen(443, function(){
+const server = http.createServer(app).listen(80);
+
+/*const server = https.createServer(options,app).listen(443, function(){
   console.log("Express server listening on port 443" );
-})
+})*/
 
 
 
+app.use(express.static(__dirname+"/public/css"))
 app.use("/",express.static("public"));
+
 var io = socketIO.listen(server);
 var user_count = 0;
+var rooms = []
+var user_list = [];
 io.sockets.on('connection', function(socket) {
+  var user_name_connected;
 	if(user_count!=2){
 		user_count+=1;
 	}else{
@@ -48,6 +57,19 @@ io.sockets.on('connection', function(socket) {
    });
 
   socket.on('create or join', function(room, user_name) {
+    if(rooms.indexOf(room) == (-1)){
+      //No existe la room
+      console.log("Se creó una sala nueva")
+      rooms.push(room)
+      user_list.push([])
+    }
+
+    console.log(JSON.stringify(rooms))
+
+    const room_actual = rooms.indexOf(room);
+    user_list[room_actual].push(user_name);
+
+    console.log(JSON.stringify(user_list[room_actual]))
     log('Received request to create or join room ' + room);
     console.log("Se conecto: "+user_name);
     var clientsInRoom = io.sockets.adapter.rooms[room];
@@ -57,16 +79,18 @@ io.sockets.on('connection', function(socket) {
     if (numClients === 0) {
       socket.join(room);
       log('Client ID ' + socket.id + ' created room ' + room);
-      socket.emit('created', room, socket.id);
+      socket.emit('created', room, user_list[room_actual]);
 
     } else if (numClients === 1) {
       log('Client ID ' + socket.id + ' joined room ' + room);
-      io.sockets.in(room).emit('join', room);
+      io.sockets.in(room).emit('join', room,user_list[room_actual]);
       socket.join(room);
-      socket.emit('joined',{"room": room, "user_name":user_name});
+      socket.emit('joined',room,user_list[room_actual]);
       io.sockets.in(room).emit('ready');
     } else { // max two clients
       socket.emit('full', room);
+      user_list[room_actual].pop();
+      console.log("--Intentando entrar a una Sala llena--");
     }
 	console.log("En la room: "+JSON.stringify(room));
   });
@@ -95,6 +119,10 @@ io.sockets.on('connection', function(socket) {
   socket.on('bradcast audio', (audiostream)=>{
      socket.to("call").emit('addAudioStream',audiostream)
   });
+  socket.on("disconnect",()=>{
+    console.log("User: "+user_name_connected+ " Se desconectó");
+    user_list.pop();
+  })
 
 });
 

@@ -1,5 +1,4 @@
 const audio_remote = document.getElementById("remoteAudio");
-document.getElementById("localAudio").style.display = "none";
 const microfono_controler=document.querySelector("#controler");
 const audio_remote_state = {
     paused:true

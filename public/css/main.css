@@ -1,8 +1,40 @@
 body {
   font-family: sans-serif;
 }
+body{
+	background-color:#25524c;
+text-align: center;
 
+}  
+
+.controler{
+    border-radius: 45px;
+    background-color:lawngreen;
+    width: 75px;
+    height: 75px;
+    background-image: url(./css/mic-logo.svg);
+  }
+  .controler_closed{
+    border-radius: 45px;
+    background-color:rgb(214, 91, 173);
+    width: 75px;
+    height: 75px;
+    background-image: url(./css/mic-logo.svg);
+  }
+  .controler_waiting{
+    border-radius: 45px;
+    background-color:rgb(246, 246, 109);
+    width: 75px;
+    height: 75px;
+    background-image: url(./css/mic-logo.svg);
+  }
 video {
-  max-width: 100%;
-  width: 320px;
+  height: 60vh;
+  width: 60vw;
 }
+
+#remoteAudio{
+  display: none;
+}
+
+
