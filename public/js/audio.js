@@ -1,6 +1,10 @@
 const audio_remote = document.getElementById("remoteAudio");
-const microfono_controler=document.querySelector("#controler");
+const microfono_controler = document.getElementById("controler");
 const audio_remote_state = {
+    paused:true
+}
+
+const local_remote_state = {
     paused:true
 }
 
@@ -9,17 +13,20 @@ live_video.setSinkId("default").then(()=>{
 	console.log(`Success, audio output device attached`);
 });
 
-var ready = false;
-audio_remote.style.display = "none";
+
+////////////////////////////////////////////////////////
 audio_remote.addEventListener("play",()=>{
     if(!ready){
         console.log("Cambio el reproductor")
-        close_mic();
         microfono_controler.className="controler_closed";
         ready = true;
+        audio_remote.play();
     }
 })
+
+/*
 microfono_controler.addEventListener("click",()=>{
+    
     if(audio_remote_state.paused&&ready){
         socket.emit('unmute');
         audio_remote_state.paused=false;
@@ -27,10 +34,9 @@ microfono_controler.addEventListener("click",()=>{
     }else if(ready){
         socket.emit('mute');
         audio_remote_state.paused=true;
-
-      microfono_controler.className="controler_closed";
+        microfono_controler.className="controler_closed";
     }
-})
+})*/
 
 socket.on('muted', function() {
     close_mic();
@@ -45,12 +51,14 @@ socket.on('addAudioStream', function(stream){
 });
 const open_mic =()=>{
     audio_remote.play();
-    //microfono.load();
+    local_remote_state.paused=false;
+    status_check=true;
 }
 const close_mic =()=>{
     audio_remote.pause();
+    local_remote_state.paused=true;
+
+    status_check=true;
     //microfono.load();
 }
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min) ) + min;
-}
+

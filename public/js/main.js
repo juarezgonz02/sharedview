@@ -3,11 +3,14 @@
 var isChannelReady = false;
 var isInitiator = false;
 var isStarted = false;
+var ready = false;
 var localStream;
 var pc;
 var remoteStream;
 var turnReady;
-
+var status_check = false;
+const audios_container = document.getElementById("remoteAudio-container");
+const controller =  document.getElementById("controler");
 var pcConfig= {
    'iceServers': [
            {"urls":["stun:stun.l.google.com:19302"]}
@@ -21,21 +24,30 @@ var sdpConstraints = {
 
 /////////////////////////////////////////////
 const userList = document.getElementById("u_list");
-var room = '';
-var user_name = prompt("Introduce tu nombre: ");
-room = prompt('Introduce el código de la sala: ');
-
+var  users_list
 var socket = io.connect();
 
- do{
-  socket.emit('create or join', room, user_name);
-  console.log('Attempted to create or  join room', room);
-}
-while(room == '');
+var room ="";
+var user_name="";
+
+do{
+  user_name = prompt("Introduce tu nombre: ");
+  room = prompt('Introduce el código de la sala: ');
+  //console.log(user_name)
+  //FOR TEST PURPOSE
+  
+     //user_name="oscar";
+    //room = "foo"
+  //console.log(room)
+
+}while(user_name=="" || room=="");
+
+socket.emit('create or join', room, user_name);
+console.log('Attempted to create or  join room', room);
 
 const user_list_append = (user_list)=>{
 
-
+  users_list = user_list;
   for(var i = 0; i<=userList.childElementCount;i++){
     userList.removeChild(userList.childNodes[i]);
   }
@@ -50,6 +62,7 @@ const user_list_append = (user_list)=>{
 }
 
 socket.on('created', function(room,user_list) {
+ 
   user_list_append(user_list);
   console.log('Created room ' + room);
   isInitiator = true;
@@ -70,7 +83,7 @@ socket.on('join', function (room, user_list){
 
 socket.on('joined', (room,user_list)=>{
   console.log('joined: ' + room);
-  user_list_append(user_list);
+  user_list_append(user_list.reverse());
   isChannelReady = true;
 });
 
@@ -131,30 +144,29 @@ function gotStream(stream) {
   if (isInitiator) {
     maybeStart();
   }
+  
+  var tracks = stream.getAudioTracks();
+  console.log("ESTADO ORIGINAL:" + tracks[0].enabled );
+  console.log(tracks.length );
+  tracks[0].enabled = false;
+  controller.addEventListener("click",()=>{
+    if(ready){
+
+      if(!tracks[0].enabled){
+        tracks[0].enabled=true;
+        controller.className="controler border border-green";
+      }else{
+        tracks[0].enabled=false;
+        controller.className="controler_closed";
+      }
+      console.log("Nuevo estado:" + tracks[0].enabled );
+    }
+
+  })
+
+
 }
 
-var constraints = {
-  video:{
-     width: {
-      min: 1920
-    },
-      height: {
-        min: 1080
-    }
-  }
-};
-const hdConstraints = {
-  video: {
-    width: {
-      min: 1280
-    },
-    height: {
-      min: 720
-    }
-  }
-}
-
-console.log('Getting user media with constraints', constraints);
 
 if (location.hostname !== 'localhost') {
   requestTurn(
@@ -272,16 +284,25 @@ function requestTurn(turnURL) {
     xhr.send();
   }
 }
-
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
-  
   remoteAudio.srcObject = remoteStream;
+}
+function stopStreamedVideo(videoElem) {
+  const stream = videoElem.srcObject;
+  const tracks = stream.getTracks();
+
+  tracks.forEach(function(track) {
+    track.stop();
+  });
+
+  videoElem.srcObject = null;
 }
 
 function handleRemoteStreamRemoved(event) {
   console.log('Remote stream removed. Event: ', event);
+
 }
 
 function hangup() {

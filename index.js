@@ -9,7 +9,6 @@ var https = require('https');
 var http = require('http');
 var fileServer = new(nodeStatic.Server)();
 var fs = require('fs');
-const { urlencoded } = require('express');
 
 const options = {
   key: fs.readFileSync('keys/privatekey.pem'),
@@ -26,6 +25,7 @@ const server = http.createServer(app).listen(80);
 
 app.use(express.static(__dirname+"/public/css"))
 app.use("/",express.static("public"));
+app.use("/test",express.static("test"));
 
 var io = socketIO.listen(server);
 var user_count = 0;
@@ -37,7 +37,9 @@ io.sockets.on('connection', function(socket) {
 		user_count+=1;
 	}else{
 		user_count=0;
-	}
+  }
+  
+  let actual_room;
 
 	//console.log("Se conecto "+socket.id)
 	//console.log("En la room: "+JSON.stringify(room_id));
@@ -58,11 +60,12 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('create or join', function(room, user_name) {
     if(rooms.indexOf(room) == (-1)){
-      //No existe la room
       console.log("Se creó una sala nueva")
       rooms.push(room)
       user_list.push([])
     }
+
+    actual_room = room;
 
     console.log(JSON.stringify(rooms))
 
@@ -116,12 +119,17 @@ io.sockets.on('connection', function(socket) {
     socket.broadcast.emit('unmuted');
     console.log(socket.id + 'Está hablando');
   });
+  
+  socket.on("newMessage", (text, title)=>{
+    io.sockets.to(actual_room).emit("newMessage", text, title)
+  })
+
   socket.on('bradcast audio', (audiostream)=>{
      socket.to("call").emit('addAudioStream',audiostream)
   });
   socket.on("disconnect",()=>{
     console.log("User: "+user_name_connected+ " Se desconectó");
-    user_list.pop();
+
   })
 
 });
