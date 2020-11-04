@@ -6,7 +6,7 @@ function preload(){
   //fontRegular = loadFont('./OpenSans.ttf')
 }
 function setup(){
-  createCanvas(110, 110);
+  createCanvas(105, 105);
   audioCtx = getAudioContext()
   width = 110;
   height = 110;
@@ -30,7 +30,7 @@ function draw(){
   //console.log(audioCtx.state)
   let level = amplitude.getLevel();
   console.log(level);
-  let size = map(level,0, 1, 75, 200);
+  let size = map(level,0, 1, 75, 130);
   ellipse(width/2, height/2, size, size)
 
   strokeWeight(1)

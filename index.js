@@ -15,11 +15,11 @@ const options = {
   cert: fs.readFileSync('keys/certificate.pem')
 };
 
-const server = http.createServer(app).listen(80);
+//const server = http.createServer(app).listen(80);
 
-/*const server = https.createServer(options,app).listen(443, function(){
+const server = https.createServer(options,app).listen(443, function(){
   console.log("Express server listening on port 443" );
-})*/
+})
 
 
 
