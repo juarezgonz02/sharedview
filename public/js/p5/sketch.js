@@ -29,7 +29,6 @@ function draw(){
   stroke(50);
   //console.log(audioCtx.state)
   let level = amplitude.getLevel();
-  console.log(level);
   let size = map(level,0, 1, 75, 130);
   ellipse(width/2, height/2, size, size)
 

@@ -15,9 +15,7 @@ const options = {
   cert: fs.readFileSync('keys/certificate.pem')
 };
 
-//const server = http.createServer(app).listen(80);
-
-const server = https.createServer(options,app).listen(443, function(){
+const server = http.createServer(app).listen(80, function(){
   console.log("Express server listening on port 443" );
 })
 
@@ -31,6 +29,7 @@ var io = socketIO.listen(server);
 var user_count = 0;
 var rooms = []
 var user_list = [];
+
 io.sockets.on('connection', function(socket) {
   var user_name_connected;
 	if(user_count!=2){
@@ -40,19 +39,12 @@ io.sockets.on('connection', function(socket) {
   }
   
   let actual_room;
-
-	//console.log("Se conecto "+socket.id)
-	//console.log("En la room: "+JSON.stringify(room_id));
-	//socket.join(room_id)
-
-
   // convenience function to log server messages on the client
   function log() {
     var array = ['Message from server:'];
     array.push.apply(array, arguments);
     socket.emit('log', array);
   }
-
   socket.on('message', function(message) {
     log('Client said: ', message);
     socket.broadcast.emit('message', message);
@@ -64,6 +56,7 @@ io.sockets.on('connection', function(socket) {
       rooms.push(room)
       user_list.push([])
     }
+    
 
     actual_room = room;
 
@@ -76,10 +69,21 @@ io.sockets.on('connection', function(socket) {
     log('Received request to create or join room ' + room);
     console.log("Se conecto: "+user_name);
     var clientsInRoom = io.sockets.adapter.rooms[room];
-    var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
-    log('Room ' + room + ' now has ' + numClients + ' client(s)');
+    var numClients;
+    if(user_name==="WEBMASTER"&&room==="CLEAN UP"){
+      soyAdmin();
+      numClients = -1;
 
-    if (numClients === 0) {
+    }else{
+      numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+    }
+
+    log('Room ' + room + ' now has ' + numClients + ' client(s)');
+    if(numClients === -1){
+      console.log("REINICIAANDOO")
+      socket.emit('erased');
+
+    } else if (numClients === 0) {
       socket.join(room);
       log('Client ID ' + socket.id + ' created room ' + room);
       socket.emit('created', room, user_list[room_actual]);
@@ -108,6 +112,7 @@ io.sockets.on('connection', function(socket) {
       });
     }
   });
+
   socket.on('bye', function(){
     console.log('received bye');
   });
@@ -134,3 +139,8 @@ io.sockets.on('connection', function(socket) {
 
 });
 
+const soyAdmin = () => {
+  rooms = [];
+  user_list = [];
+  console.log("Se limpiaron los datos");
+}
