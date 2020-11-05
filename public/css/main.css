@@ -6,23 +6,13 @@
   body{
     color: white;
     background-color:#121212;
+
   }  
-  @media screen and (max-width: 1200px) {
-    #root{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      margin: 2em;
-      margin-bottom: 0em;
-      width: calc(100vw-100px);
-      height: calc(100vh-2em);
-    }
-  }
   #root{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin: 1.1em;
+    margin: 2em;
     margin-bottom: 0em;
     width: calc(100vw-100px);
     height: calc(100vh-2em);
@@ -34,9 +24,8 @@
   .control-users-container{
     display: flex;
     flex-direction: row;
-    margin-top: 1.2em;
-    margin-left: 0.2em;
-	width: 60vw;
+    margin-top: 0.5em;
+    width: 60vw;
     height: 100px;
   }
   .controler-container{

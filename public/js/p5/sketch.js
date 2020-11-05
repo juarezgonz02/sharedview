@@ -6,7 +6,7 @@ function preload(){
   //fontRegular = loadFont('./OpenSans.ttf')
 }
 function setup(){
-  createCanvas(105, 105);
+  createCanvas(110, 110);
   audioCtx = getAudioContext()
   width = 110;
   height = 110;
