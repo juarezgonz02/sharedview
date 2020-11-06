@@ -1,5 +1,5 @@
 var video = document.createElement('video');
-video.id="video";
+video.id="video-stream";
 video.className = "stream-video";
 video.autoplay = true;
 video.controls = true;
