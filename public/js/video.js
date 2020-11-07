@@ -4,7 +4,7 @@ video.className = "stream-video";
 video.autoplay = true;
 video.controls = true;
 
-var videoSrc = 'https://sharedview.tk:8800/hls/web.m3u8';
+var videoSrc = 'http://live.sharedview.tk:3000/hls/web.m3u8';
 // Before check for m3u8 data
 
 

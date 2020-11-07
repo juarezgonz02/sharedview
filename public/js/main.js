@@ -36,6 +36,8 @@ do{
 
 }while(user_name=="" || room=="");
 
+
+window.location.hash = room;
 socket.emit('create or join', room, user_name);
 console.log('Attempted to create or  join room', room);
 
