@@ -21,31 +21,11 @@
             <script src="js/hls.min.js"></script>
 
             <div id="video-stream-cont">
-              <video autoplay class="stream-video" id="video"></video>
+              <video autoplay controls class="stream-video" id="video"></video>
+
             </div>
-            <script>
-              var video = document.getElementById('video');
-              var videoSrc = 'https://sharedview.tk:8800/hls/web.m3u8';
-          //
-          // First check for native browser HLS support
-          //
-          if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = videoSrc;
-            video.addEventListener('loadedmetadata', function() {
-              video.play();
-            });
-          //
-          // If no native HLS support, check if hls.js is supported
-          //
-          } else if (Hls.isSupported()) {
-            var hls = new Hls();
-            hls.loadSource(videoSrc);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-              video.play();
-            });
-          }
-              </script>
+
+            <script src="js/video.js"> </script>
         </div>
 
         <div class="control-users-container">
@@ -101,6 +81,7 @@
     <script src="js/main.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/user.js"></script>
+    <script src= "js/video.js"></script>
 
   </body>
 

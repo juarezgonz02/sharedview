@@ -33,15 +33,11 @@ var user_name="";
 do{
   user_name = prompt("Introduce tu nombre: ");
   room = prompt('Introduce el código de la sala: ');
-  //console.log(user_name)
-  //FOR TEST PURPOSE
-  
-     //user_name="oscar";
-    //room = "foo"
-  //console.log(room)
 
 }while(user_name=="" || room=="");
 
+
+window.location.hash = room;
 socket.emit('create or join', room, user_name);
 console.log('Attempted to create or  join room', room);
 
@@ -90,7 +86,15 @@ socket.on('joined', (room,user_list)=>{
 socket.on('log', function(array) {
   console.log.apply(console, array);
 });
+socket.on('erased',function(){
+  location.reload();
+})
 
+socket.on('connect',function(){
+  socket.on('disconnect',function(){
+    hangup();
+  })
+})
 ////////////////////////////////////////////////
 
 function sendMessage(message) {
