@@ -8,6 +8,17 @@
     background-color:#121212;
 
   }  
+  @media screen and (max-width: 1200px) {
+    #root{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 2em;
+      margin-bottom: 0em;
+      width: calc(100vw-100px);
+      height: calc(100vh-2em);
+    }
+  }
   #root{
     display: flex;
     flex-direction: row;
@@ -90,6 +101,10 @@
     margin-right: 0;
   }
   #video-stream-cont{
+	background: URL('ICONO.png');
+	  background-repeat: no-repeat;
+background-position: center;
+
     display: fixed;
     z-index: -1;
   }
