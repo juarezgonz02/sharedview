@@ -98,12 +98,12 @@
     width: 60vw;
     background-color: rgba(21, 21, 21, 0.8);
     height: 70vh;
+    background: URL('ICONO.png');
+    background-repeat: no-repeat;
+    background-position: center;
     margin-right: 0;
   }
   #video-stream-cont{
-	background: URL('ICONO.png');
-	  background-repeat: no-repeat;
-background-position: center;
 
     display: fixed;
     z-index: -1;
