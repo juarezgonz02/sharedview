@@ -1,0 +1,214 @@
+
+  @import url('/imageshttps://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+  body{
+    color: white;
+    background-color:#121212;
+
+  }  
+  @media screen and (max-width: 1200px) {
+    #root{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 2em;
+      margin-bottom: 0em;
+      width: calc(100vw-100px);
+      height: calc(100vh-2em);
+    }
+  }
+  #root{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 2em;
+    margin-bottom: 0em;
+    width: calc(100vw-100px);
+    height: calc(100vh-2em);
+  }
+  .main-container{
+    width: auto;
+    height: 90vh;
+  }
+  .message {
+    margin-bottom: 1em;
+    font-size: 0.8em;
+  }
+  .control-users-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5em;
+    width: 60vw;
+    height: 100px;
+  }
+  .controler-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-around; 
+    width: 110px;
+    height: 110px;
+  }
+  #controler:hover{
+    cursor: pointer;
+  }
+  #controler{
+    border-radius: 75px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+  }
+  .controler{  
+    border-color:lawngreen;
+    border: 1px bold lawngreen;
+    width: 75px;
+    height: 75px;
+    background-image: url(./images/mic-logo.svg);
+  }
+
+  .controler_closed{
+    background-color:#976ccc;
+    width: 75px;
+    height: 75px;
+    background-image: url(./images/mic-logo-off.svg);
+  }
+  .controler_waiting{
+    border-radius: 75px;
+    cursor: pointer;
+    border: 5px bold ;
+    border-color: rgb(252, 245, 188);
+    width: 75px;
+    height: 75px;
+    background-image: url(./images/mic-logo-off.svg);
+    
+  }
+  .UsersDisplay{
+    margin-left: 3em;
+  }
+
+  .UsersDisplay>span{
+    font-size: 2em;
+  }
+
+  .user_name_item{
+    padding-left: 1em;
+    font-size: 1.3em;
+    border-color: #976ccc;
+    border-left: 3px solid #976ccc;
+  }
+  .video-container{
+    width: 60vw;
+    background-color: rgba(21, 21, 21, 0.8);
+    height: 70vh;
+    background: URL('./images/ICONO.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 0;
+  }
+  #video-stream-cont{
+
+    display: fixed;
+    z-index: -1;
+  }
+  #localAudio{
+    display: none;
+  }
+  #video{
+    display: none;
+  }
+  #video-stream{
+    height: 100%;
+    width: 100%;
+  }
+  .no-stream{
+    display: flex;
+    color: whitesmoke;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+  #remoteAudio{
+    display: inline;
+  }
+  #remoteAudio-container{
+    display: flex;
+    width: 15vw;
+    height: 19vh;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .chat-container{
+    background-color: rgba(25, 25, 25, 0.8);
+    width: 27vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-header{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 10%;
+    width: 100%;
+    border-bottom: 2px solid #976ccc ;
+    background-color: rgba(30, 30, 30, 0.8);
+  }
+  .chat-header>span{
+    font-size: 1.5em;
+  }
+  #message-writer{
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    height: 100%;
+  }
+  .messages-container{
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    width: 100%;
+    padding: 1em;
+    height: 82%;
+  }
+  .messages-container > span{
+    font-weight: bold;
+  }
+  .messages-container::-webkit-scrollbar{
+    display: none;
+  }
+  #message{
+    width: 88%;
+    color: white;
+    padding-left: 8px;
+    background-color: rgba(50, 50, 50, 0.8);
+    border: 0px;
+    border-bottom: 2px bold #976ccc;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+  }
+  #send{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(50, 50, 50, 0.8);
+    border: 0px;
+  }
+  .send-ico{
+    font-size: 4em;
+    color: #976ccc;
+    margin: auto;
+    cursor: pointer;
+  }
+  .send-ico:hover{
+
+    color: white;
+  }

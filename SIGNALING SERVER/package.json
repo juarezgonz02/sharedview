@@ -1,0 +1,16 @@
+{
+  "name": "sharedview",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "node-static": "^0.7.10",
+    "socket.io": "^4.7.2",
+    "yarn": "^1.22.10"
+  },
+  "scripts": {
+    "dev": "node index.js"
+  }
+}
