@@ -2,6 +2,11 @@ import express from 'express';
 import http from 'http';
 import { Server as socketIO } from 'socket.io'; // Import 'Server' from socket.io as 'socketIO'
 import cors from 'cors'; // Import the 'cors' middleware
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
@@ -13,8 +18,8 @@ const io = new socketIO(server, {
 
 app.use(cors({ origin: 'http://localhost:3000' }));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+app.get('/exproom/*', (req, res) => {
+  res.status(200).sendFile(__dirname+'/rooms.json');
 });
 
 io.on('connection', (socket) => {

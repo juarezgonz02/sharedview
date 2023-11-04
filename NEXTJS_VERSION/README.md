@@ -1,3 +1,15 @@
+# Env (example)
+
+
+``` bash
+NEXT_PUBLIC_PROTOCOL=http
+NEXT_PUBLIC_HOST=localhost
+KEY=nodemediahls
+NEXT_PUBLIC_HLS_PORT=8000
+NEXT_PUBLIC_API_PORT=80
+NEXT_PUBLIC_WEB_PORT=3000
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
